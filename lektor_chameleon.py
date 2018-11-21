@@ -3,12 +3,11 @@ from lektor.pluginsystem import Plugin
 
 
 class Filter:
-    def __init__(self, f, ctx):
-        self.f = f
-        self.ctx = ctx
-
+    def __init__(self, func):
+        self.func = func
+ 
     def __rrshift__(self, x):
-        return self.f(self.ctx, x)
+        return self.func(x)
 
 
 def render_template(self, name, pad=None, this=None, values=None, alt=None):
@@ -16,8 +15,9 @@ def render_template(self, name, pad=None, this=None, values=None, alt=None):
     ctx.update(self.jinja_env.globals)
 
     filters = self.jinja_env.filters
-    ctx["asseturl"] = Filter(filters["asseturl"], ctx)
-    ctx["url"] = Filter(filters["url"], ctx)
+
+    ctx["asseturl"] = lambda *a, **kw: Filter(lambda x: filters["asseturl"](ctx, x, *a, **kw))
+    ctx["url"] = lambda *a, **kw: Filter(lambda x: filters["url"](ctx, x, *a, **kw))
 
     template = self.chameleon_loader[name]
     return template(**ctx)
