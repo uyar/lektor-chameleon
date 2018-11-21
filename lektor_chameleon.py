@@ -2,13 +2,22 @@ from chameleon import PageTemplateLoader
 from lektor.pluginsystem import Plugin
 
 
+class Filter:
+    def __init__(self, f, ctx):
+        self.f = f
+        self.ctx = ctx
+
+    def __rrshift__(self, x):
+        return self.f(self.ctx, x)
+
+
 def render_template(self, name, pad=None, this=None, values=None, alt=None):
     ctx = self.make_default_tmpl_values(pad, this, values, alt, template=name)
     ctx.update(self.jinja_env.globals)
 
     filters = self.jinja_env.filters
-    ctx["asseturl"] = lambda *a, **kw: filters["asseturl"](ctx, *a, **kw)
-    ctx["url"] = lambda *a, **kw: filters["url"](ctx, *a, **kw)
+    ctx["asseturl"] = Filter(filters["asseturl"], ctx)
+    ctx["url"] = Filter(filters["url"], ctx)
 
     template = self.chameleon_loader[name]
     return template(**ctx)
