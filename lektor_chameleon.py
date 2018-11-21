@@ -1,10 +1,15 @@
+from functools import partial
+
 from chameleon import PageTemplateLoader
 from lektor.pluginsystem import Plugin
 
 
 class Filter:
-    def __init__(self, func):
-        self.func = func
+    def __init__(self, func, ctx=None):
+        self.func = func if ctx is None else partial(func, ctx)
+ 
+    def __call__(self, **kwargs):
+        return Filter(partial(self.func, **kwargs))
  
     def __rrshift__(self, x):
         return self.func(x)
@@ -14,10 +19,8 @@ def render_template(self, name, pad=None, this=None, values=None, alt=None):
     ctx = self.make_default_tmpl_values(pad, this, values, alt, template=name)
     ctx.update(self.jinja_env.globals)
 
-    filters = self.jinja_env.filters
-
-    ctx["asseturl"] = lambda *a, **kw: Filter(lambda x: filters["asseturl"](ctx, x, *a, **kw))
-    ctx["url"] = lambda *a, **kw: Filter(lambda x: filters["url"](ctx, x, *a, **kw))
+    ctx["asseturl"] = Filter(self.jinja_env.filters["asseturl"], ctx)
+    ctx["url"] = Filter(self.jinja_env.filters["url"], ctx)
 
     template = self.chameleon_loader[name]
     return template(**ctx)
