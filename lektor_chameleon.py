@@ -14,7 +14,18 @@ class Filter:
         return Filter(partial(self.func, **kwargs), markup=self.markup)
 
     def __rrshift__(self, x):
-        return self.func(x) if not self.markup else Markup(self.func(x.html).unescape())
+        if self.markup:
+            try:
+                x = x.html
+            except AttributeError:
+                pass
+        transformed = self.func(x)
+        if self.markup:
+            try:
+                transformed = transformed.unescape()
+            except AttributeError:
+                pass
+        return transformed if not self.markup else Markup(transformed)
 
 
 _CONTEXT_FILTERS = {"url", "asseturl", "markdown"}
