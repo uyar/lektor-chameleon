@@ -6,7 +6,21 @@ from markupsafe import Markup
 
 
 _CONTEXT_FILTERS = {"url", "asseturl", "markdown"}
-_STR_FILTERS = {"capitalize", "center", "indent", "lower", "title", "trim", "upper"}
+_STR_FILTERS = {
+    "capitalize",
+    "center",
+    "indent",
+    "length",
+    "lower",
+    "replace",
+    "title",
+    "trim",
+    "truncate",
+    "upper",
+    "wordcount",
+    "wordwrap",
+}
+_JINJA_ENV_FILTERS = {"attr", "replace", "truncate", "wordwrap"}
 
 
 class Filter:
@@ -45,7 +59,10 @@ class ChameleonPlugin(Plugin):
     def on_setup_env(self, **extra):
         template_paths = self.env.jinja_env.loader.searchpath
         self.env.chameleon_loader = PageTemplateLoader(template_paths)
-        self.env.chameleon_filters = {
-            n: Filter(n, f) for n, f in self.env.jinja_env.filters.items()
-        }
+
+        filters = {n: Filter(n, f) for n, f in self.env.jinja_env.filters.items()}
+        for f_name in _JINJA_ENV_FILTERS:
+            filters[f_name] = filters[f_name](self.env.jinja_env)
+        self.env.chameleon_filters = filters
+
         self.env.__class__.render_template = render_template
