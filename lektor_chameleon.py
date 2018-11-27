@@ -18,7 +18,24 @@ class Filter:
 
 
 _CONTEXT_FILTERS = {"url", "asseturl", "markdown"}
-_MARKUP_FILTERS = {"indent"}
+_MARKUP_FILTERS = {
+    "capitalize",
+    "center",
+    "escape",
+    "forceescape",
+    "format",
+    "indent",
+    "lower",
+    "replace",
+    "striptags",
+    "title",
+    "trim",
+    "truncate",
+    "upper",
+    "urlencode",
+    "urlize",
+    "wordwrap",
+}
 
 
 def render_template(self, name, pad=None, this=None, values=None, alt=None):
