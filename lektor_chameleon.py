@@ -5,52 +5,34 @@ from lektor.pluginsystem import Plugin
 from markupsafe import Markup
 
 
-class Filter:
-    def __init__(self, func, ctx=None, markup=False):
-        self.func = func if ctx is None else partial(func, ctx)
-        self.markup = markup
+_CONTEXT_FILTERS = {"url", "asseturl", "markdown"}
+_STR_FILTERS = {"capitalize", "center", "indent", "lower", "title", "trim", "upper"}
 
-    def __call__(self, **kwargs):
-        return Filter(partial(self.func, **kwargs), markup=self.markup)
+
+class Filter:
+    def __init__(self, name, func):
+        self.name = name
+        self.func = func
+        self.ctx = self.name in _CONTEXT_FILTERS
+        self.str = self.name in _STR_FILTERS
+
+    def __call__(self, *args, **kwargs):
+        return Filter(self.name, partial(self.func, *args, **kwargs))
 
     def __rrshift__(self, x):
-        p = x.html if self.markup and hasattr(x, "html") else x
+        markup = self.str and hasattr(x, "html")
+        p = x.html if markup else x
         t = self.func(p)
-        y = t.unescape() if self.markup and hasattr(t, "unescape") else t
-        return Markup(y) if self.markup else y
-
-
-_CONTEXT_FILTERS = {"url", "asseturl", "markdown"}
-_MARKUP_FILTERS = {
-    "capitalize",
-    "center",
-    "escape",
-    "forceescape",
-    "format",
-    "indent",
-    "lower",
-    "replace",
-    "striptags",
-    "title",
-    "trim",
-    "truncate",
-    "upper",
-    "urlencode",
-    "urlize",
-    "wordwrap",
-}
+        y = t.unescape() if hasattr(t, "unescape") else t
+        return Markup(y) if markup else y
 
 
 def render_template(self, name, pad=None, this=None, values=None, alt=None):
     ctx = self.make_default_tmpl_values(pad, this, values, alt, template=name)
     ctx.update(self.jinja_env.globals)
 
-    for f_name, f_func in self.jinja_env.filters.items():
-        ctx[f_name] = Filter(
-            f_func,
-            ctx=ctx if f_name in _CONTEXT_FILTERS else None,
-            markup=f_name in _MARKUP_FILTERS,
-        )
+    for f_name, f_filter in self.chameleon_filters.items():
+        ctx[f_name] = f_filter(ctx) if f_filter.ctx else f_filter
 
     template = self.chameleon_loader[name]
     return template(**ctx)
@@ -63,4 +45,7 @@ class ChameleonPlugin(Plugin):
     def on_setup_env(self, **extra):
         template_paths = self.env.jinja_env.loader.searchpath
         self.env.chameleon_loader = PageTemplateLoader(template_paths)
+        self.env.chameleon_filters = {
+            n: Filter(n, f) for n, f in self.env.jinja_env.filters.items()
+        }
         self.env.__class__.render_template = render_template
