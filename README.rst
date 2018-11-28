@@ -1,5 +1,5 @@
-This plugin makes it possible to write Lektor templates using
-`Chameleon <https://chameleon.readthedocs.io/>`_.
+This plugin makes it possible to write `Lektor <https://www.getlektor.com>`_
+templates using `Chameleon <https://chameleon.readthedocs.io/>`_.
 It achieves this by replacing the Jinja renderer with the Chameleon renderer
 during template rendering.
 
