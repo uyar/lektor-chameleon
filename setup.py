@@ -18,7 +18,7 @@ setup(
         "Environment :: Plugins",
         "Environment :: Web Environment",
         "Framework :: Lektor",
-        "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+        "License :: OSI Approved :: BSD License",
     ],
     keywords="lektor chameleon templating",
     py_modules=["lektor_chameleon"],

@@ -5,7 +5,7 @@
     :alt: PyPI version.
 
 .. |license| image:: https://img.shields.io/pypi/l/lektor-chameleon.svg?style=flat-square
-    :target: https://pypi.org/project/lektor-chameleon/
+    :target: https://github.com/uyar/lektor-chameleon/blob/master/LICENSE.txt
     :alt: Project license.
 
 This plugin makes it possible to write `Lektor <https://www.getlektor.com>`_

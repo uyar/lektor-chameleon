@@ -1,3 +1,8 @@
+# Copyright (C) 2018-2019 H. Turgut Uyar <uyar@tekir.org>
+#
+# lektor-chameleon is released under the BSD license. Read the included
+# LICENSE.txt file for details.
+
 from functools import partial
 
 from chameleon import PageTemplateLoader
