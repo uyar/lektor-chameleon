@@ -6,7 +6,7 @@ with open("README.rst") as readme_file:
 
 setup(
     name="lektor-chameleon",
-    version="0.3",
+    version="0.4",
     description="Chameleon support for templating in Lektor.",
     long_description=readme,
     url="http://github.com/uyar/lektor-chameleon",
@@ -15,8 +15,8 @@ setup(
     license="LGPL",
     classifiers=[
         "Development Status :: 4 - Beta",
-        "Environment :: Web Environment",
         "Environment :: Plugins",
+        "Environment :: Web Environment",
         "Framework :: Lektor",
         "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
     ],
