@@ -20,7 +20,7 @@ setup(
         "Framework :: Lektor",
         "License :: OSI Approved :: BSD License",
     ],
-    keywords="lektor chameleon templating",
+    keywords="lektor plugin static-site blog chameleon templating",
     py_modules=["lektor_chameleon"],
     install_requires=["chameleon"],
     entry_points={"lektor.plugins": ["chameleon = lektor_chameleon:ChameleonPlugin"]},
