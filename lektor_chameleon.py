@@ -6,6 +6,7 @@
 from functools import partial
 
 from chameleon import PageTemplateLoader
+from lektor.context import get_ctx
 from lektor.pluginsystem import Plugin
 from markupsafe import Markup
 
@@ -53,7 +54,9 @@ def render_template(self, name, pad=None, this=None, values=None, alt=None):
     for f_name, f_filter in self.chameleon_filters.items():
         ctx[f_name] = f_filter(ctx) if f_filter.ctx else f_filter
 
-    template = self.chameleon_loader[name]
+    template = self.chameleon_loader.load(name)
+    get_ctx().record_dependency(template.filename)
+
     return template(**ctx)
 
 
