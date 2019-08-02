@@ -1,0 +1,13 @@
+History
+=======
+
+0.4 (2019-08-02)
+----------------
+
+- Correctly track template dependencies during builds.
+- Switch to BSD license.
+
+0.1 (2018-10-28)
+----------------
+
+- Initial release.
