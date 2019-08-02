@@ -6,6 +6,7 @@
 from functools import partial
 
 from chameleon import PageTemplateLoader
+from chameleon.loader import TemplateLoader
 from lektor.context import get_ctx
 from lektor.pluginsystem import Plugin
 from markupsafe import Markup
@@ -29,6 +30,19 @@ _STR_FILTERS = {
 _JINJA_ENV_FILTERS = {"attr", "replace", "truncate", "wordwrap"}
 
 
+chameleon_load = TemplateLoader.load
+
+
+def load_template(self, filename, *args, **kwargs):
+    ctx = get_ctx()
+    template = chameleon_load(self, filename, *args, **kwargs)
+    ctx.record_dependency(template.filename)
+    return template
+
+
+TemplateLoader.load = load_template
+
+
 class Filter:
     def __init__(self, name, func):
         self.name = name
@@ -50,13 +64,9 @@ class Filter:
 def render_template(self, name, pad=None, this=None, values=None, alt=None):
     ctx = self.make_default_tmpl_values(pad, this, values, alt, template=name)
     ctx.update(self.jinja_env.globals)
-
     for f_name, f_filter in self.chameleon_filters.items():
         ctx[f_name] = f_filter(ctx) if f_filter.ctx else f_filter
-
     template = self.chameleon_loader.load(name)
-    get_ctx().record_dependency(template.filename)
-
     return template(**ctx)
 
 
@@ -66,7 +76,7 @@ class ChameleonPlugin(Plugin):
 
     def on_setup_env(self, **extra):
         template_paths = self.env.jinja_env.loader.searchpath
-        self.env.chameleon_loader = PageTemplateLoader(template_paths)
+        self.env.chameleon_loader = PageTemplateLoader(template_paths, auto_reload=True)
 
         filters = {n: Filter(n, f) for n, f in self.env.jinja_env.filters.items()}
         for f_name in _JINJA_ENV_FILTERS:
