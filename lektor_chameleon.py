@@ -30,19 +30,6 @@ _STR_FILTERS = {
 _JINJA_ENV_FILTERS = {"attr", "replace", "truncate", "wordwrap"}
 
 
-chameleon_load = TemplateLoader.load
-
-
-def load_template(self, filename, *args, **kwargs):
-    ctx = get_ctx()
-    template = chameleon_load(self, filename, *args, **kwargs)
-    ctx.record_dependency(template.filename)
-    return template
-
-
-TemplateLoader.load = load_template
-
-
 class Filter:
     def __init__(self, name, func):
         self.name = name
@@ -59,6 +46,19 @@ class Filter:
         t = self.func(p)
         y = t.unescape() if hasattr(t, "unescape") else t
         return Markup(y) if markup else y
+
+
+chameleon_load = TemplateLoader.load
+
+
+def load_template(self, filename, *args, **kwargs):
+    ctx = get_ctx()
+    template = chameleon_load(self, filename, *args, **kwargs)
+    ctx.record_dependency(template.filename)
+    return template
+
+
+TemplateLoader.load = load_template
 
 
 def render_template(self, name, pad=None, this=None, values=None, alt=None):
