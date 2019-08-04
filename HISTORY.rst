@@ -1,6 +1,11 @@
 History
 =======
 
+0.5 (unreleased)
+----------------
+
+- Require explicit enabling of plugin.
+
 0.4 (2019-08-02)
 ----------------
 
