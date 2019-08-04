@@ -15,7 +15,7 @@ Add it to your project::
 
 Since the plugin modifies the default environment,
 it requires that it will be explicitly enabled.
-To enable the plugin, create the file `configs/chameleon.ini`
+To enable the plugin, create the file ``configs/chameleon.ini``
 and put the following lines into it::
 
   [chameleon]
