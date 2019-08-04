@@ -1,5 +1,7 @@
-This plugin makes it possible to write `Lektor <https://www.getlektor.com>`_
-templates using `Chameleon <https://chameleon.readthedocs.io/>`_.
+lektor-chameleon is a plugin for
+the `Lektor <https://www.getlektor.com>`_ static site generator
+that makes is possible to write the templates using
+the `Chameleon <https://chameleon.readthedocs.io/>`_ template engine.
 
 Usage examples:
 
