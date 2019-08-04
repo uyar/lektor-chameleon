@@ -1,13 +1,3 @@
-|pypi| |license|
-
-.. |pypi| image:: https://img.shields.io/pypi/v/lektor-chameleon.svg?style=flat-square
-    :target: https://pypi.org/project/lektor-chameleon/
-    :alt: PyPI version.
-
-.. |license| image:: https://img.shields.io/pypi/l/lektor-chameleon.svg?style=flat-square
-    :target: https://github.com/uyar/lektor-chameleon/blob/master/LICENSE.txt
-    :alt: Project license.
-
 This plugin makes it possible to write `Lektor <https://www.getlektor.com>`_
 templates using `Chameleon <https://chameleon.readthedocs.io/>`_.
 
