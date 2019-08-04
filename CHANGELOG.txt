@@ -1,4 +1,4 @@
-0.5 (unreleased)
+0.5 (2019-08-04)
 ----------------
 
 - Require explicit enabling of plugin.
