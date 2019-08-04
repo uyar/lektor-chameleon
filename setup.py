@@ -4,11 +4,14 @@ from setuptools import setup
 with open("README.rst") as readme_file:
     readme = readme_file.read()
 
+with open("CHANGELOG.txt") as changelog_file:
+    changelog = changelog_file.read()
+
 setup(
     name="lektor-chameleon",
     version="0.4",
     description="Chameleon support for templating in Lektor.",
-    long_description=readme,
+    long_description=readme + '\n\n' + changelog,
     url="http://github.com/uyar/lektor-chameleon",
     author="H. Turgut Uyar",
     author_email="uyar@tekir.org",
