@@ -1,3 +1,9 @@
+|pypi|
+
+.. |pypi| image:: https://img.shields.io/pypi/v/lektor-chameleon.svg?style=flat-square
+    :target: https://pypi.org/project/lektor-chameleon/
+    :alt: PyPI version.
+
 lektor-chameleon is a plugin for
 the `Lektor <https://www.getlektor.com>`_ static site generator
 that makes is possible to write the templates using
