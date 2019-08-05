@@ -11,7 +11,7 @@ setup(
     name="lektor-chameleon",
     version="0.5",
     description="Chameleon support for templating in Lektor.",
-    long_description=readme + '\n\n' + changelog,
+    long_description=readme + "\n\n" + changelog,
     url="http://github.com/uyar/lektor-chameleon",
     author="H. Turgut Uyar",
     author_email="uyar@tekir.org",
@@ -26,5 +26,7 @@ setup(
     keywords="lektor plugin static-site blog chameleon templating",
     py_modules=["lektor_chameleon"],
     install_requires=["chameleon"],
-    entry_points={"lektor.plugins": ["chameleon = lektor_chameleon:ChameleonPlugin"]},
+    entry_points={
+        "lektor.plugins": ["chameleon = lektor_chameleon:ChameleonPlugin"]
+    },
 )
