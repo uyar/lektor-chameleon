@@ -15,7 +15,7 @@ setup(
     url="http://github.com/uyar/lektor-chameleon",
     author="H. Turgut Uyar",
     author_email="uyar@tekir.org",
-    license="LGPL",
+    license="BSD",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Plugins",
