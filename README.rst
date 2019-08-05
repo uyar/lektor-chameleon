@@ -4,17 +4,16 @@
     :target: https://pypi.org/project/lektor-chameleon/
     :alt: PyPI version.
 
-lektor-chameleon is a plugin for
-the `Lektor <https://www.getlektor.com>`_ static site generator
-that makes is possible to write the templates using
+lektor-chameleon is a plugin for the `Lektor <https://www.getlektor.com>`_
+static site generator that makes is possible to write the templates using
 the `Chameleon <https://chameleon.readthedocs.io/>`_ template engine.
 
-Add it to your project::
+To use the plugin, add it to your project::
 
   lektor plugin add lektor-chameleon
 
-Since the plugin modifies the default environment,
-it requires that it will be explicitly enabled.
+Since the plugin modifies the default environment, it requires
+that it will be explicitly enabled.
 To enable the plugin, create the file ``configs/chameleon.ini``
 and put the following lines into it::
 
