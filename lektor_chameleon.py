@@ -60,6 +60,8 @@ def load_template(self, filename, *args, **kwargs):
 
 
 def render_template(self, name, pad=None, this=None, values=None, alt=None):
+    if isinstance(name, list):
+        name = name[0]
     ctx = self.make_default_tmpl_values(pad, this, values, alt, template=name)
     ctx.update(self.jinja_env.globals)
     for f_name, f_filter in self.chameleon_filters.items():
