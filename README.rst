@@ -1,8 +1,12 @@
-|pypi|
+|pypi| |license|
 
 .. |pypi| image:: https://img.shields.io/pypi/v/lektor-chameleon.svg?style=flat-square
     :target: https://pypi.org/project/lektor-chameleon/
     :alt: PyPI version.
+
+.. |license| image:: https://img.shields.io/pypi/l/lektor-chameleon.svg?style=flat-square
+    :target: https://github.com/uyar/lektor-chameleon/blob/master/LICENSE.txt
+    :alt: Project license.
 
 lektor-chameleon is a plugin for the `Lektor <https://www.getlektor.com>`_
 static site generator that makes is possible to write the templates using
