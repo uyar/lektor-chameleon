@@ -3,7 +3,6 @@
 # lektor-chameleon is released under the BSD license. Read the included
 # LICENSE.txt file for details.
 
-import os.path
 from functools import partial
 
 from chameleon import PageTemplateLoader
@@ -55,8 +54,8 @@ chameleon_load = TemplateLoader.load
 def load_template(self, filename, *args, **kwargs):
     ctx = get_ctx()
     pt_ext = self.__class__.file_ext
-    if pt_ext is not None:
-        filename = os.path.splitext(filename)[0] + pt_ext
+    if (pt_ext is not None) and (filename == ctx.source.datamodel.id + ".html"):
+        filename = ctx.source.datamodel.id + pt_ext
     template = chameleon_load(self, filename, *args, **kwargs)
     ctx.record_dependency(template.filename)
     return template

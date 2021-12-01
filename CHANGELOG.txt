@@ -1,3 +1,8 @@
+0.6.1 (2021-12-01)
+------------------
+
+- Use template file extension setting only on model default templates.
+
 0.6 (2021-12-01)
 ----------------
 
