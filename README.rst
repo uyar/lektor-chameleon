@@ -24,6 +24,13 @@ and put the following lines into it::
   [chameleon]
   enabled = yes
 
+If you don't want to use the ".html" extension for your template files,
+you can set a different one in the configuration::
+
+  [chameleon]
+  enabled = yes
+  file_ext = .pt
+
 Usage examples:
 
 .. code-block:: html

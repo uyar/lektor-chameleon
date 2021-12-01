@@ -1,9 +1,9 @@
-# Copyright (C) 2018-2019 H. Turgut Uyar <uyar@tekir.org>
+# Copyright (C) 2018-2021 H. Turgut Uyar <uyar@tekir.org>
 #
 # lektor-chameleon is released under the BSD license. Read the included
 # LICENSE.txt file for details.
 
-import warnings
+import os.path
 from functools import partial
 
 from chameleon import PageTemplateLoader
@@ -54,6 +54,9 @@ chameleon_load = TemplateLoader.load
 
 def load_template(self, filename, *args, **kwargs):
     ctx = get_ctx()
+    pt_ext = self.__class__.file_ext
+    if pt_ext is not None:
+        filename = os.path.splitext(filename)[0] + pt_ext
     template = chameleon_load(self, filename, *args, **kwargs)
     ctx.record_dependency(template.filename)
     return template
@@ -80,12 +83,14 @@ class ChameleonPlugin(Plugin):
         config = self.get_config()
         self.enabled = config.get_bool("chameleon.enabled", False)
 
-        if not self.enabled:
-            warnings.warn("Chameleon plugin is installed but not enabled.")
-        else:
+        if self.enabled:
+            TemplateLoader.file_ext = config.get("chameleon.file_ext")
             TemplateLoader.load = load_template
 
     def on_setup_env(self, **extra):
+        if not self.enabled:
+            return
+
         template_paths = self.env.jinja_env.loader.searchpath
         self.env.chameleon_loader = PageTemplateLoader(template_paths, auto_reload=True)
 
@@ -94,5 +99,4 @@ class ChameleonPlugin(Plugin):
             filters[f_name] = filters[f_name](self.env.jinja_env)
         self.env.chameleon_filters = filters
 
-        if self.enabled:
-            self.env.__class__.render_template = render_template
+        self.env.__class__.render_template = render_template

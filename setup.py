@@ -9,10 +9,10 @@ with open("CHANGELOG.txt") as changelog_file:
 
 setup(
     name="lektor-chameleon",
-    version="0.5.1",
+    version="0.6",
     description="Chameleon support for templating in Lektor.",
     long_description=readme + "\n\n" + changelog,
-    url="http://github.com/uyar/lektor-chameleon",
+    url="https://github.com/uyar/lektor-chameleon",
     author="H. Turgut Uyar",
     author_email="uyar@tekir.org",
     license="BSD",

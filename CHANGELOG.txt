@@ -1,3 +1,8 @@
+0.6 (2021-12-01)
+----------------
+
+- Add ability to set the template file extension in the configuration.
+
 0.5.1 (2019-08-11)
 ------------------
 
