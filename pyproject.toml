@@ -1,0 +1,55 @@
+[project]
+name = "lektor-chameleon"
+version = "0.7"
+description = "Chameleon template support for Lektor."
+readme = "README.rst"
+
+authors = [{name = "H. Turgut Uyar", email = "uyar@tekir.org"}]
+license = {file = "LICENSE.txt"}
+
+keywords = ["lektor", "plugin", "chameleon", "template"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Plugins",
+    "Framework :: Lektor",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+]
+
+requires-python = "~=3.8"
+dependencies = ["chameleon"]
+
+[project.optional-dependencies]
+style = ["ruff"]
+dev = [
+    "lektor-chameleon[style]",
+    "lektor",
+    "markupsafe",
+    "build",
+]
+
+[project.entry-points."lektor.plugins"]
+chameleon = "lektor_chameleon:ChameleonPlugin"
+
+[project.urls]
+repository = "https://github.com/uyar/lektor-chameleon"
+
+[tool.ruff]
+select = ["E", "F", "I"]
+ignore = ["E731"]
+line-length = 79
+
+[tool.ruff.isort]
+lines-after-imports = 2
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

@@ -1,9 +1,0 @@
-#
-# MANIFEST.in
-#
-# Manifest template for creating the Distutils source distribution.
-#
-
-include README.rst CHANGELOG.txt LICENSE.txt
-global-exclude __pycache__
-global-exclude *~
