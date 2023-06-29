@@ -1,33 +1,29 @@
-# Copyright (C) 2018-2021 H. Turgut Uyar <uyar@tekir.org>
+# Copyright (C) 2018-2023 H. Turgut Uyar <uyar@tekir.org>
 #
-# lektor-chameleon is released under the BSD license. Read the included
-# LICENSE.txt file for details.
+# lektor-chameleon is released under the BSD license.
+# Read the included LICENSE.txt file for details.
 
 from functools import partial
 
 from chameleon import PageTemplateLoader
 from chameleon.loader import TemplateLoader
 from lektor.context import get_ctx
-from lektor.pluginsystem import Plugin, get_plugin
+from lektor.pluginsystem import Plugin
 from markupsafe import Markup
 
 
-_CONTEXT_FILTERS = {"url", "asseturl", "markdown"}
-_STR_FILTERS = {
-    "capitalize",
-    "center",
-    "indent",
-    "length",
-    "lower",
-    "replace",
-    "title",
-    "trim",
-    "truncate",
-    "upper",
-    "wordcount",
-    "wordwrap",
+_CONTEXT_FILTERS = {
+    "url", "asseturl", "markdown",
 }
-_JINJA_ENV_FILTERS = {"attr", "replace", "truncate", "wordwrap"}
+
+_STR_FILTERS = {
+    "capitalize", "center", "indent", "length", "lower", "replace", "title",
+    "trim", "truncate", "upper", "wordcount", "wordwrap",
+}
+
+_JINJA_ENV_FILTERS = {
+    "attr", "replace", "truncate", "wordwrap",
+}
 
 
 class Filter:
@@ -54,7 +50,8 @@ chameleon_load = TemplateLoader.load
 def load_template(self, filename, *args, **kwargs):
     ctx = get_ctx()
     pt_ext = self.__class__.file_ext
-    if (pt_ext is not None) and (filename == ctx.source.datamodel.id + ".html"):
+    if (pt_ext is not None) and \
+            (filename == ctx.source.datamodel.id + ".html"):
         filename = ctx.source.datamodel.id + pt_ext
     template = chameleon_load(self, filename, *args, **kwargs)
     ctx.record_dependency(template.filename)
@@ -91,9 +88,11 @@ class ChameleonPlugin(Plugin):
             return
 
         template_paths = self.env.jinja_env.loader.searchpath
-        self.env.chameleon_loader = PageTemplateLoader(template_paths, auto_reload=True)
+        self.env.chameleon_loader = PageTemplateLoader(template_paths,
+                                                       auto_reload=True)
 
-        filters = {n: Filter(n, f) for n, f in self.env.jinja_env.filters.items()}
+        filters = {n: Filter(n, f)
+                   for n, f in self.env.jinja_env.filters.items()}
         for f_name in _JINJA_ENV_FILTERS:
             filters[f_name] = filters[f_name](self.env.jinja_env)
         self.env.chameleon_filters = filters
