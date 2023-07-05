@@ -21,6 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Internet",
+    "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Site Management",
 ]
 
@@ -34,6 +35,8 @@ dev = [
     "lektor",
     "markupsafe",
     "build",
+    "twine",
+    "tox",
 ]
 
 [project.entry-points."lektor.plugins"]
@@ -49,6 +52,30 @@ line-length = 79
 
 [tool.ruff.isort]
 lines-after-imports = 2
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = style
+isolated_build = True
+
+[testenv:style]
+skip_install = true
+deps =
+    ruff
+commands =
+    ruff lektor_chameleon
+
+[testenv:package]
+skip_install = true
+deps =
+    build
+    twine
+commands =
+    python -c "import shutil; shutil.rmtree('dist', ignore_errors=True)"
+    python -m build
+    twine check dist/*
+"""
 
 [build-system]
 requires = ["setuptools"]
