@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.8 (unreleased)
+0.8 (2024-04-27)
 ----------------
 
 - Remove all configuration. The file extension must now be ".pt".

@@ -63,11 +63,21 @@ def render_template(self, name, pad=None, this=None, values=None, alt=None):
     if isinstance(name, list):
         name = name[0]
     ctx = self.make_default_tmpl_values(pad, this, values, alt, template=name)
-    ctx.update(self.jinja_env.globals)
-    for f_name, f_filter in self.chameleon_filters.items():
+    ctx.update(self.chameleon_env.globals)
+    for f_name, f_filter in self.chameleon_env.filters.items():
         ctx[f_name] = f_filter(ctx) if f_filter.ctx else f_filter
-    template = self.chameleon_loader.load(name)
+    template = self.chameleon_env.loader.load(name)
     return template(**ctx)
+
+
+class ChameleonEnvironment:
+    def __init__(self, jinja_env) -> None:
+        self.loader = PageTemplateLoader(jinja_env.loader.searchpath,
+                                         auto_reload=True)
+        self.globals = jinja_env.globals
+        self.filters = {n: Filter(n, f) for n, f in jinja_env.filters.items()}
+        for f_name in _JINJA_ENV_FILTERS:
+            self.filters[f_name] = self.filters[f_name](jinja_env)
 
 
 class ChameleonPlugin(Plugin):
@@ -77,14 +87,5 @@ class ChameleonPlugin(Plugin):
     def on_setup_env(self, **extra):
         reporter.report_generic("Setting up to use Chameleon templates")
         TemplateLoader.load = load_template
-        template_paths = self.env.jinja_env.loader.searchpath
-        self.env.chameleon_loader = PageTemplateLoader(template_paths,
-                                                       auto_reload=True)
-
-        filters = {n: Filter(n, f)
-                   for n, f in self.env.jinja_env.filters.items()}
-        for f_name in _JINJA_ENV_FILTERS:
-            filters[f_name] = filters[f_name](self.env.jinja_env)
-        self.env.chameleon_filters = filters
-
         self.env.__class__.render_template = render_template
+        self.env.chameleon_env = ChameleonEnvironment(self.env.jinja_env)
