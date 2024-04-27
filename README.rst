@@ -10,19 +10,10 @@ To use the plugin, add it to your project::
 
   lektor plugin add lektor-chameleon
 
-Since the plugin modifies the default environment,
-it requires that it will be explicitly enabled.
-To enable the plugin, create the file ``configs/chameleon.ini``
-and put the following lines into it::
-
-  [chameleon]
-  enabled = yes
-
 If you don't want to use the ".html" extension for your template files,
 you can set a different one in the configuration::
 
   [chameleon]
-  enabled = yes
   file_ext = .pt
 
 Usage examples:

@@ -11,6 +11,7 @@ from chameleon import PageTemplateLoader
 from chameleon.loader import TemplateLoader
 from lektor.context import get_ctx
 from lektor.pluginsystem import Plugin
+from lektor.reporter import reporter
 from markupsafe import Markup
 
 
@@ -77,18 +78,15 @@ class ChameleonPlugin(Plugin):
 
     def __init__(self, *args, **kwargs):
         Plugin.__init__(self, *args, **kwargs)
+        reporter.report_generic("Instantiating Chameleon")
 
         config = self.get_config()
-        self.enabled = config.get_bool("chameleon.enabled", False)
 
-        if self.enabled:
-            TemplateLoader.file_ext = config.get("chameleon.file_ext")
-            TemplateLoader.load = load_template
+        TemplateLoader.file_ext = config.get("chameleon.file_ext")
+        TemplateLoader.load = load_template
 
     def on_setup_env(self, **extra):
-        if not self.enabled:
-            return
-
+        reporter.report_generic("Using Chameleon templates")
         template_paths = self.env.jinja_env.loader.searchpath
         self.env.chameleon_loader = PageTemplateLoader(template_paths,
                                                        auto_reload=True)
