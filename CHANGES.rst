@@ -1,6 +1,11 @@
 Changes
 =======
 
+0.9 (unreleased)
+----------------
+
+- Remove custom filter syntax. Jinja filters are made available as functions.
+
 0.8 (2024-04-27)
 ----------------
 
