@@ -1,6 +1,6 @@
 [project]
 name = "lektor-chameleon"
-version = "0.7"
+version = "0.8"
 description = "Chameleon template support for Lektor."
 readme = "README.rst"
 
@@ -23,20 +23,13 @@ classifiers = [
 ]
 
 requires-python = "~=3.8"
-dependencies = ["chameleon"]
+dependencies = ["lektor", "chameleon"]
 
 [project.optional-dependencies]
-style = [
-    "flake8",
-    "flake8-pyproject",
-    "flake8-isort",
-    "flake8-builtins",
-    "flake8-print",
-]
+tests = ["pytest"]
+style = ["ruff"]
 dev = [
-    "lektor-chameleon[style]",
-    "lektor",
-    "markupsafe",
+    "lektor-chameleon[tests,style]",
     "build",
     "twine",
     "tox",
@@ -48,29 +41,40 @@ chameleon = "lektor_chameleon:ChameleonPlugin"
 [project.urls]
 repository = "https://github.com/uyar/lektor-chameleon"
 
-[tool.flake8]
-max-line-length = 79
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 
-[tool.isort]
-lines_after_imports = 2
-multi_line_output = 2
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = ["A", "E", "F", "I", "T", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
 
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = style
+envlist = py3{8,9,10,11,12}, style
 isolated_build = True
+
+[testenv]
+extras = tests
+package = wheel
+wheel_build_env = .pkg
+commands =
+    pytest
 
 [testenv:style]
 skip_install = true
 deps =
-    flake8
-    flake8-pyproject
-    flake8-isort
-    flake8-builtins
-    flake8-print
+    ruff
 commands =
-    flake8 lektor_chameleon.py
+    ruff check --preview lektor_chameleon.py tests
 
 [testenv:package]
 skip_install = true
