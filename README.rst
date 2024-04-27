@@ -10,11 +10,7 @@ To use the plugin, add it to your project::
 
   lektor plugin add lektor-chameleon
 
-If you don't want to use the ".html" extension for your template files,
-you can set a different one in the configuration::
-
-  [chameleon]
-  file_ext = .pt
+Templates must have the ``.pt`` file extension.
 
 Usage examples:
 

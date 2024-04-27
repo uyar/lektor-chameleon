@@ -52,10 +52,8 @@ chameleon_load = TemplateLoader.load
 
 def load_template(self, filename, *args, **kwargs):
     ctx = get_ctx()
-    pt_ext = self.__class__.file_ext
-    if (pt_ext is not None) and \
-            (filename == ctx.source.datamodel.id + ".html"):
-        filename = ctx.source.datamodel.id + pt_ext
+    if filename == ctx.source.datamodel.id + ".html":
+        filename = ctx.source.datamodel.id + ".pt"
     template = chameleon_load(self, filename, *args, **kwargs)
     ctx.record_dependency(template.filename)
     return template
@@ -76,17 +74,9 @@ class ChameleonPlugin(Plugin):
     name = "chameleon"
     description = "Chameleon support for templating"
 
-    def __init__(self, *args, **kwargs):
-        Plugin.__init__(self, *args, **kwargs)
-        reporter.report_generic("Instantiating Chameleon")
-
-        config = self.get_config()
-
-        TemplateLoader.file_ext = config.get("chameleon.file_ext")
-        TemplateLoader.load = load_template
-
     def on_setup_env(self, **extra):
-        reporter.report_generic("Using Chameleon templates")
+        reporter.report_generic("Setting up to use Chameleon templates")
+        TemplateLoader.load = load_template
         template_paths = self.env.jinja_env.loader.searchpath
         self.env.chameleon_loader = PageTemplateLoader(template_paths,
                                                        auto_reload=True)
