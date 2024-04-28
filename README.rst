@@ -22,7 +22,7 @@ Usage examples:
 
    <span tal:replace="bag('translate', this.alt, 'message')">message</span>
 
-The following Lektor filters are available as functions:
+All custom Lektor filters are available as functions:
 
 - `asseturl <https://www.getlektor.com/docs/api/templates/filters/asseturl/>`_
 - `dateformat <https://www.getlektor.com/docs/api/templates/filters/dateformat/>`_
@@ -34,7 +34,8 @@ The following Lektor filters are available as functions:
 - `tojson <https://www.getlektor.com/docs/api/templates/filters/tojson/>`_
 - `url <https://www.getlektor.com/docs/api/templates/filters/url/>`_
 
-The following Jinja filters are available as functions:
+For convenience, the following Jinja filters have also been made available
+as functions:
 
 - `filesizeformat <https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.filesizeformat>`_
 - `indent <https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.indent>`_
