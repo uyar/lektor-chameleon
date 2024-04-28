@@ -3,7 +3,7 @@
 # lektor-chameleon is released under the BSD license.
 # Read the included LICENSE.txt file for details.
 
-__version__ = "0.8"
+__version__ = "0.9"
 
 from functools import partial
 
