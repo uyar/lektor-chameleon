@@ -10,6 +10,7 @@ from functools import partial
 from chameleon import PageTemplateLoader
 from chameleon.loader import TemplateLoader
 from lektor.context import get_ctx
+from lektor.environment import Environment
 from lektor.pluginsystem import Plugin
 from lektor.reporter import reporter
 
@@ -28,22 +29,18 @@ ENV_FILTERS = [
 ]
 
 
-def load_template(self, filename, *args, **kwargs):
+def load_template(loader, filename, *args, **kwargs):
     ctx = get_ctx()
     if filename == ctx.source.datamodel.id + ".html":
         filename = ctx.source.datamodel.id + ".pt"
-    template = chameleon_load(self, filename, *args, **kwargs)
+    template = chameleon_load(loader, filename, *args, **kwargs)
     ctx.record_dependency(template.filename)
     return template
 
 
-def render_template(self, name, pad=None, this=None, values=None, alt=None):
-    if isinstance(name, list):
-        name = name[0]
-    ctx = self.make_default_tmpl_values(pad, this, values, alt, template=name)
-    ctx.update(self.chameleon_env.globals)
-    ctx.update(self.chameleon_env.filters)
-    template = self.chameleon_env.loader.load(name)
+def render_template(env, name, pad=None, this=None, values=None, alt=None):
+    template = env.chameleon_env.loader.load(name)
+    ctx = env.make_default_tmpl_values(pad, this, values, alt, template=name)
     return template(**ctx)
 
 
@@ -68,4 +65,8 @@ class ChameleonPlugin(Plugin):
         reporter.report_generic("Setting up to use Chameleon templates")
         self.env.chameleon_env = ChameleonEnvironment(self.env.jinja_env)
         TemplateLoader.load = load_template
-        self.env.__class__.render_template = render_template
+        Environment.render_template = render_template
+
+    def on_process_template_context(self, context, **extra):
+        context.update(self.env.chameleon_env.globals)
+        context.update(self.env.chameleon_env.filters)
