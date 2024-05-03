@@ -31,8 +31,9 @@ ENV_FILTERS = [
 
 def load_template(loader, filename, *args, **kwargs):
     ctx = get_ctx()
-    if filename == ctx.source.datamodel.id + ".html":
-        filename = ctx.source.datamodel.id + ".pt"
+    html_suffix = filename.rfind(".html")
+    if html_suffix >= 0:
+        filename = filename[:html_suffix] + ".pt"
     template = chameleon_load(loader, filename, *args, **kwargs)
     ctx.record_dependency(template.filename)
     return template
@@ -46,8 +47,7 @@ def render_template(env, name, pad=None, this=None, values=None, alt=None):
 
 class ChameleonEnvironment:
     def __init__(self, jinja_env) -> None:
-        self.loader = PageTemplateLoader(jinja_env.loader.searchpath,
-                                         auto_reload=True)
+        self.loader = PageTemplateLoader(jinja_env.loader.searchpath)
         self.globals = jinja_env.globals
         self.filters = {}
         for filter_name in REG_FILTERS:
