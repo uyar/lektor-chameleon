@@ -24,13 +24,14 @@ classifiers = [
 ]
 
 requires-python = "~=3.8"
-dependencies = ["lektor", "chameleon"]
+dependencies = ["chameleon"]
 
 [project.optional-dependencies]
 tests = ["pytest", "pytest-cov"]
 style = ["ruff"]
 dev = [
     "lektor-chameleon[tests,style]",
+    "lektor",
     "build",
     "twine",
     "tox",

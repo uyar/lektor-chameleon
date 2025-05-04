@@ -1,10 +1,11 @@
 Changes
 =======
 
-0.10 (2024-04-28)
+0.10 (unreleased)
 -----------------
 
 - Disable template autoreloading.
+- Remove lektor from dependencies.
 
 0.9 (2024-04-28)
 ----------------
