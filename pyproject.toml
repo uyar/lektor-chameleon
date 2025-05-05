@@ -1,6 +1,6 @@
 [project]
 name = "lektor-chameleon"
-version = "0.9"
+version = "0.10"
 description = "Chameleon template support for Lektor."
 readme = "README.rst"
 

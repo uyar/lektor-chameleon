@@ -1,9 +1,9 @@
-# Copyright (C) 2018-2024 H. Turgut Uyar <uyar@tekir.org>
+# Copyright (C) 2018-2025 H. Turgut Uyar <uyar@tekir.org>
 #
 # lektor-chameleon is released under the BSD license.
 # Read the included LICENSE.txt file for details.
 
-__version__ = "0.9"
+__version__ = "0.10"
 
 from functools import partial
 

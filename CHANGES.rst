@@ -1,7 +1,7 @@
 Changes
 =======
 
-0.10 (unreleased)
+0.10 (2025-0505)
 -----------------
 
 - Disable template autoreloading.
