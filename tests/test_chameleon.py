@@ -1,11 +1,11 @@
+import pytest
+
 import os
 import subprocess
 from importlib import metadata
 from pathlib import Path
 from shutil import rmtree
 from textwrap import dedent
-
-import pytest
 
 import lektor_chameleon
 

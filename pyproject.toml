@@ -5,7 +5,8 @@ description = "Chameleon template support for Lektor."
 readme = "README.rst"
 
 authors = [{name = "H. Turgut Uyar", email = "uyar@tekir.org"}]
-license = {file = "LICENSE.txt"}
+license = "BSD-3-Clause"
+license-files = ["LICENSE.txt"]
 
 keywords = ["lektor", "plugin", "chameleon", "template"]
 classifiers = [
@@ -13,7 +14,6 @@ classifiers = [
     "Environment :: Plugins",
     "Framework :: Lektor",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -26,22 +26,21 @@ classifiers = [
 requires-python = "~=3.9"
 dependencies = ["chameleon"]
 
-[project.optional-dependencies]
-tests = ["pytest", "pytest-cov"]
+[dependency-groups]
+test = ["pytest", "pytest-cov"]
 style = ["ruff"]
 dev = [
-    "lektor-chameleon[tests,style]",
+    {include-group = "test"},
+    {include-group = "style"},
     "lektor",
-    "build",
-    "twine",
-    "tox",
+    "tox-uv",
 ]
 
 [project.entry-points."lektor.plugins"]
 chameleon = "lektor_chameleon:ChameleonPlugin"
 
 [project.urls]
-repository = "https://github.com/uyar/lektor-chameleon"
+repository = "https://code.tekir.org/uyar/lektor-chameleon"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -58,6 +57,7 @@ line-length = 79
 
 [tool.ruff.lint]
 select = ["A", "E", "F", "I", "T", "W"]
+ignore = ["E731"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E501"]
@@ -72,28 +72,19 @@ envlist = py3{9,10,11,12,13}, style
 isolated_build = True
 
 [testenv]
-extras = tests
+runner = uv-venv-lock-runner
 package = wheel
 wheel_build_env = .pkg
 commands =
     pytest
 
-[testenv:style]
-skip_install = true
-deps =
-    ruff
+[testenv:coverage]
 commands =
-    ruff check --preview lektor_chameleon.py tests
+    pytest --cov
 
-[testenv:package]
-skip_install = true
-deps =
-    build
-    twine
+[testenv:style]
 commands =
-    python -c "import shutil; shutil.rmtree('dist', ignore_errors=True)"
-    python -m build
-    twine check dist/*
+    ruff check lektor_chameleon.py tests
 """
 
 [build-system]
