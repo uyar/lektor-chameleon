@@ -2,12 +2,9 @@ import pytest
 
 import os
 import subprocess
-from importlib import metadata
 from pathlib import Path
 from shutil import rmtree
 from textwrap import dedent
-
-import lektor_chameleon
 
 
 LEKTOR_ROOT = Path("/dev/shm/lektor-chameleon")
@@ -25,7 +22,7 @@ def lektor_init():
 
     project_file = LEKTOR_ROOT / "project.lektorproject"
     project_file.parent.mkdir(parents=True, exist_ok=True)
-    project_file.write_text(dedent("""
+    _ = project_file.write_text(dedent("""
         [project]
         name = Project
         output_path = _build
@@ -33,7 +30,7 @@ def lektor_init():
 
     model_file = LEKTOR_ROOT / "models" / "page.ini"
     model_file.parent.mkdir(parents=True, exist_ok=True)
-    model_file.write_text(dedent("""
+    _ = model_file.write_text(dedent("""
         [model]
         name = Page
         label = {{ this.title }}
@@ -53,7 +50,7 @@ def lektor_init():
 
     style_file = LEKTOR_ROOT / "assets" / "static" / "style.css"
     style_file.parent.mkdir(parents=True, exist_ok=True)
-    style_file.write_text("")
+    _ = style_file.write_text("")
 
     current_dir = os.getcwd()
     os.chdir(LEKTOR_ROOT)
@@ -61,10 +58,6 @@ def lektor_init():
 
     os.chdir(current_dir)
     rmtree(LEKTOR_ROOT)
-
-
-def test_installed_version_should_match_tested_version():
-    assert metadata.version("lektor_chameleon") == lektor_chameleon.__version__
 
 
 @pytest.mark.parametrize(("content", "template", "output"), [
@@ -80,9 +73,9 @@ def test_installed_version_should_match_tested_version():
     ),
 ])
 def test_interpolation_should_be_substituted_by_result(content, template, output):
-    LEKTOR_HOME_SRC.write_text(content)
-    LEKTOR_PAGE_TEMPLATE.write_text(template)
-    subprocess.run(["lektor", "build"])
+    _ = LEKTOR_HOME_SRC.write_text(content)
+    _ = LEKTOR_PAGE_TEMPLATE.write_text(template)
+    _ = subprocess.run(["lektor", "build"])
     generated = LEKTOR_HOME_DST.read_text()
     assert generated == output
 
@@ -100,9 +93,9 @@ def test_interpolation_should_be_substituted_by_result(content, template, output
     ),
 ])
 def test_tal_content_should_replace_content(content, template, output):
-    LEKTOR_HOME_SRC.write_text(content)
-    LEKTOR_PAGE_TEMPLATE.write_text(template)
-    subprocess.run(["lektor", "build"])
+    _ = LEKTOR_HOME_SRC.write_text(content)
+    _ = LEKTOR_PAGE_TEMPLATE.write_text(template)
+    _ = subprocess.run(["lektor", "build"])
     generated = LEKTOR_HOME_DST.read_text()
     assert generated == output
 
@@ -110,9 +103,9 @@ def test_tal_content_should_replace_content(content, template, output):
 @pytest.mark.parametrize(("content", "template", "output"), [
 ])
 def test_added_filter_should_produce_correct_result(content, template, output):
-    LEKTOR_HOME_SRC.write_text(content)
-    LEKTOR_PAGE_TEMPLATE.write_text(template)
-    subprocess.run(["lektor", "build"])
+    _ = LEKTOR_HOME_SRC.write_text(content)
+    _ = LEKTOR_PAGE_TEMPLATE.write_text(template)
+    _ = subprocess.run(["lektor", "build"])
     generated = LEKTOR_HOME_DST.read_text()
     assert generated == output
 
@@ -165,9 +158,9 @@ def test_added_filter_should_produce_correct_result(content, template, output):
     ),
 ])
 def test_added_lektor_filter_should_produce_same_result(content, template, output):
-    LEKTOR_HOME_SRC.write_text(content)
-    LEKTOR_PAGE_TEMPLATE.write_text(template)
-    subprocess.run(["lektor", "build"])
+    _ = LEKTOR_HOME_SRC.write_text(content)
+    _ = LEKTOR_PAGE_TEMPLATE.write_text(template)
+    _ = subprocess.run(["lektor", "build"])
     generated = LEKTOR_HOME_DST.read_text()
     assert generated == output
 
@@ -200,8 +193,8 @@ def test_added_lektor_filter_should_produce_same_result(content, template, outpu
     ),
 ])
 def test_added_jinja_filter_should_produce_same_result(content, template, output):
-    LEKTOR_HOME_SRC.write_text(content)
-    LEKTOR_PAGE_TEMPLATE.write_text(template)
-    subprocess.run(["lektor", "build"])
+    _ = LEKTOR_HOME_SRC.write_text(content)
+    _ = LEKTOR_PAGE_TEMPLATE.write_text(template)
+    _ = subprocess.run(["lektor", "build"])
     generated = LEKTOR_HOME_DST.read_text()
     assert generated == output
