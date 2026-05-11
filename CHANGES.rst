@@ -1,7 +1,12 @@
 Changes
 =======
 
-0.10 (2025-0505)
+0.11 (unreleased)
+-----------------
+
+- Add support for templating flow blocks.
+
+0.10 (2025-05-05)
 -----------------
 
 - Disable template autoreloading.

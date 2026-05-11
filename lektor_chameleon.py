@@ -31,11 +31,20 @@ ENV_FILTERS = [
 
 def load_template(loader, filename, *args, **kwargs):
     ctx = get_ctx()
-    html_suffix = filename.rfind(".html")
-    if html_suffix >= 0:
-        filename = filename[:html_suffix] + ".pt"
-    template = chameleon_load(loader, filename, *args, **kwargs)
-    ctx.record_dependency(template.filename)
+    if isinstance(filename, str):
+        filename = [filename]
+    for template_name in filename:
+        html_suffix = template_name.rfind(".html")
+        if html_suffix >= 0:
+            template_name = template_name[:html_suffix] + ".pt"
+        try:
+            template = chameleon_load(loader, template_name, *args, **kwargs)
+            ctx.record_dependency(template.filename)
+            break
+        except Exception:
+            pass
+    else:
+        raise RuntimeError("no template found for %s" % filename)
     return template
 
 
