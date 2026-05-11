@@ -1,10 +1,12 @@
 [project]
 name = "lektor-chameleon"
-version = "0.10"
+version = "0.11"
 description = "Chameleon template support for Lektor."
 readme = "README.rst"
 
-authors = [{name = "H. Turgut Uyar", email = "uyar@tekir.org"}]
+authors = [
+    {name = "H. Turgut Uyar", email = "uyar@tekir.org"},
+]
 license = "BSD-3-Clause"
 license-files = ["LICENSE.txt"]
 
@@ -20,27 +22,35 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Internet :: WWW/HTTP :: Site Management",
 ]
 
 requires-python = "~=3.9"
-dependencies = ["chameleon"]
+dependencies = [
+    "chameleon~=4.6",
+]
 
 [dependency-groups]
-test = ["pytest", "pytest-cov"]
-style = ["ruff"]
+test = [
+    "pytest>=8.4.2",
+     "pytest-cov>=7.1.0",
+]
+style = [
+    "ruff>=0.15.12",
+]
 dev = [
     {include-group = "test"},
     {include-group = "style"},
-    "lektor",
-    "tox-uv",
+    "lektor~=3.3",
+    "tox-uv>=1.28.1",
 ]
 
 [project.entry-points."lektor.plugins"]
 chameleon = "lektor_chameleon:ChameleonPlugin"
 
 [project.urls]
-repository = "https://code.tekir.org/uyar/lektor-chameleon"
+homepage = "https://pypi.org/project/lektor-chameleon/"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -58,9 +68,7 @@ line-length = 79
 [tool.ruff.lint]
 select = ["A", "E", "F", "I", "T", "W"]
 ignore = ["E731"]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["E501"]
+preview = true
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
@@ -68,7 +76,7 @@ lines-after-imports = 2
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py3{9,10,11,12,13}, style
+envlist = py3{9,10,11,12,13,14}, style
 isolated_build = True
 
 [testenv]
