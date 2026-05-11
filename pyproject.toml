@@ -2,7 +2,7 @@
 name = "lektor-chameleon"
 version = "0.11"
 description = "Chameleon template support for Lektor."
-readme = "README.rst"
+readme = "README.md"
 
 authors = [
     {name = "H. Turgut Uyar", email = "uyar@tekir.org"},
