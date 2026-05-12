@@ -1,6 +1,6 @@
 [project]
 name = "lektor-chameleon"
-version = "0.11"
+version = "0.11.1"
 description = "Chameleon template support for Lektor."
 readme = "README.md"
 
@@ -8,7 +8,6 @@ authors = [
     {name = "H. Turgut Uyar", email = "uyar@tekir.org"},
 ]
 license = "BSD-3-Clause"
-license-files = ["LICENSE.txt"]
 
 keywords = ["lektor", "plugin", "chameleon", "template"]
 classifiers = [

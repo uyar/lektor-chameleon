@@ -1,5 +1,9 @@
 # Changes
 
+## 0.11.1 (2026-05-12)
+
+- Remove separate license file and include license in source.
+
 ## 0.11 (2026-05-11)
 
 - Fix support for templating flow blocks.
