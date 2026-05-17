@@ -26,13 +26,14 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__version__ = "0.12"
+__version__ = "0.13"
 
 from functools import partial
 from pathlib import Path
 
 from chameleon import PageTemplateLoader
 from chameleon.loader import TemplateLoader
+from lektor.cli import build_cmd
 from lektor.context import get_ctx
 from lektor.environment import Environment
 from lektor.pluginsystem import Plugin
@@ -134,6 +135,10 @@ class ChameleonPlugin(Plugin):
         self.env.chameleon_env = ChameleonEnvironment(self.env.jinja_env)
         TemplateLoader.load = load_template
         Environment.render_template = render_template
+
+    def on_before_build_all(self, builder, **extra):
+        if "watch" in {p.name for p in build_cmd.params}:
+            self.env.chameleon_env.loader.kwargs["auto_reload"] = True
 
     def on_process_template_context(self, context, **extra):
         context.update(self.env.chameleon_env.globals)

@@ -1,5 +1,9 @@
 # Changes
 
+## 0.13 (2026-05-17)
+
+- Automatically reload templates when in watch mode.
+
 ## 0.12 (2026-05-17)
 
 - Provide proper error messages for template errors.
