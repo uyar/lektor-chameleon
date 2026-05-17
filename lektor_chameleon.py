@@ -26,9 +26,10 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-__version__ = "0.11.1"
+__version__ = "0.12"
 
 from functools import partial
+from pathlib import Path
 
 from chameleon import PageTemplateLoader
 from chameleon.loader import TemplateLoader
@@ -72,9 +73,42 @@ def load_template(loader, filename, *args, **kwargs):
 
 
 def render_template(env, name, pad=None, this=None, values=None, alt=None):
-    template = env.chameleon_env.loader.load(name)
+    loader = env.chameleon_env.loader
+    template = loader.load(name)
     ctx = env.make_default_tmpl_values(pad, this, values, alt, template=name)
-    return template(**ctx)
+    try:
+        return template(**ctx)
+    except Exception as e:
+        template_dirname = Path(loader.search_path[0]).name
+        exc_text = str(e)
+        file_path = ""
+        location = ""
+        for line in exc_text.splitlines():
+            tokens = line.split("- Filename:")
+            if len(tokens) == 2:
+                full_path = tokens[1].strip()
+                if full_path.startswith("... "):
+                    full_path = full_path[4:]
+                path_parts = Path(full_path).parts
+                index = next(
+                    i
+                    for i in reversed(range(len(path_parts)))
+                    if path_parts[i] == template_dirname
+                )
+                file_path = str(Path(*path_parts[index:]))
+                continue
+
+            tokens = line.split("- Location:")
+            if len(tokens) == 2:
+                location = tokens[1].strip().replace(":", "")
+                break
+        if (file_path != "") and (location != ""):
+            exc_text = "%(exc)s - file: %(tmpl)s - %(loc)s" % {
+                "exc": f"{e.__class__.__name__}: {', '.join(e.args)}",
+                "tmpl": f"'{file_path}'",
+                "loc": location[1:-1],
+            }
+        raise RuntimeError(exc_text)
 
 
 class ChameleonEnvironment:
@@ -85,8 +119,10 @@ class ChameleonEnvironment:
         for filter_name in REG_FILTERS:
             self.filters[filter_name] = jinja_env.filters[filter_name]
         for filter_name in ENV_FILTERS:
-            self.filters[filter_name] = partial(jinja_env.filters[filter_name],
-                                                jinja_env)
+            self.filters[filter_name] = partial(
+                jinja_env.filters[filter_name],
+                jinja_env,
+            )
 
 
 class ChameleonPlugin(Plugin):

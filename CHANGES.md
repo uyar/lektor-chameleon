@@ -1,5 +1,9 @@
 # Changes
 
+## 0.12 (2026-05-17)
+
+- Provide proper error messages for template errors.
+
 ## 0.11.1 (2026-05-12)
 
 - Remove separate license file and include license in source.
