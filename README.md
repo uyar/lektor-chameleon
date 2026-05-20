@@ -5,10 +5,20 @@ static site generator
 that makes is possible to write the templates
 using the [Chameleon](https://chameleon.readthedocs.io/) template engine.
 
+> *Warning* The current stable release of Lektor (3.3.x) requires
+> that plugins have a `setup.py` file and does not pick up plugins
+> which only have a `pyproject.toml` file.
+> Until this issue gets resolved in the stable release,
+> Lektor needs to be installed as a prerelease:
+>
+> ```sh
+> pip install --pre lektor
+> ```
+
 To use the plugin, add it to your project:
 
 ```sh
-$ lektor plugin add lektor-chameleon
+lektor plugin add lektor-chameleon
 ```
 
 Templates must have the ``.pt`` file extension.
